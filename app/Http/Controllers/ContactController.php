@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ContactController extends Controller
 {
@@ -12,10 +13,8 @@ class ContactController extends Controller
      */
     public function index()
     {
-        // Busca todos os contatos do banco, ordenando pelos mais recentes
         $contacts = Contact::latest()->get(); 
 
-        // Retorna a view 'contacts.index' e passa a variável 'contacts' para ela
         return view('contacts.index', compact('contacts'));
     }
 
@@ -32,17 +31,14 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate contact
         $validatedData = $request->validate([
             'name'      => 'required|string|min:6',
             'contact'   => 'required|digits:9|unique:contacts,contact',
             'email'     => 'required|email|unique:contacts,email',
         ]);
 
-        // If validated, create new contact
         Contact::create($validatedData);
 
-        // Redirect to contacts list
         return redirect()->route('contacts.index')->with('success', 'Contato criado com sucesso!');
     }
 
@@ -65,9 +61,25 @@ class ContactController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Contact $contact)
     {
-        //
+        $validatedData = $request->validate([
+            'name'      => 'required|string|min:6',
+            'contact'   => [
+                'required',
+                'digits:9',
+                Rule::unique('contacts')->ignore($contact->id),
+            ],
+            'email'     => [
+                'required',
+                'email',
+                Rule::unique('contacts')->ignore($contact->id),
+            ],
+        ]);
+
+        $contact->update($validatedData);
+
+        return redirect()->route('contacts.index')->with('success', 'Contato atualizado com sucesso!');
     }
 
     /**
