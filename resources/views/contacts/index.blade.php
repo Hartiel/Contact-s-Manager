@@ -40,7 +40,6 @@
                     <td>{{ $contact->email }}</td>
                     <td>
                         <a href="{{ route('contacts.edit', $contact->id) }}">Editar</a>
-                        {{-- O formulário de delete virá depois --}}
                     </td>
                 </tr>
             @empty

@@ -12,7 +12,7 @@
     <hr>
 
     <form action="{{ route('contacts.store') }}" method="POST">
-        @csrf  {{-- Diretiva de segurança do Laravel, essencial! --}}
+        @csrf
 
         <div>
             <label for="name">Nome:</label><br>
