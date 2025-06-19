@@ -34,12 +34,17 @@
                 <tr>
                     <td>{{ $contact->id }}</td>
                     <td>
-                        <a href="{{ route('contacts.show', $contact->id) }}">{{ $contact->name }}</a>
+                        <a href="{{ route('contacts.show', $contact) }}">{{ $contact->name }}</a>
                     </td>
                     <td>{{ $contact->contact }}</td>
                     <td>{{ $contact->email }}</td>
                     <td>
                         <a href="{{ route('contacts.edit', $contact) }}">Editar</a>
+                        <form action="{{ route('contacts.destroy', $contact) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" onclick="return confirm('Tem certeza que deseja apagar este contato?')">Deletar</button>
+                        </form>
                     </td>
                 </tr>
             @empty
