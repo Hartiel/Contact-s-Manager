@@ -18,8 +18,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('contacts', ContactController::class);
-
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::resource('contacts', ContactController::class)->only(['index', 'show']);
+
+Route::resource('contacts', ContactController::class)
+    ->except(['index', 'show'])
+    ->middleware('auth');
