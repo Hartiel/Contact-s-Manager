@@ -39,7 +39,7 @@
                     <td>{{ $contact->contact }}</td>
                     <td>{{ $contact->email }}</td>
                     <td>
-                        <a href="{{ route('contacts.edit', $contact->id) }}">Editar</a>
+                        <a href="{{ route('contacts.edit', $contact) }}">Editar</a>
                     </td>
                 </tr>
             @empty
